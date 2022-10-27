@@ -1,0 +1,26 @@
+{
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-connect": "^5.7.0",
+    "gulp-eslint": "^6.0.0",
+    "gulp-zip": "^5.1.0",
+    "yargs": "^17.6.0"
+  },
+  "name": "the-math-of-scalability",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nukemberg/the-math-of-scalability.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nukemberg/the-math-of-scalability/issues"
+  },
+  "homepage": "https://github.com/nukemberg/the-math-of-scalability#readme",
+  "description": ""
+}
