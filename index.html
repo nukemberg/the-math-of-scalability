@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=1600, initial-scale=1.0"> -->
+    <title>The Math of Scalability</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/simple.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js-plugins/menu/font-awesome/css/fontawesome.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <section>
+                    <h1>The Math of Scalability</h1>
+                    <h3>Avishai Ish-Shalom (@nukemberg)</h3>
+                </section>
+                <section>
+                    <img src="images/burning_man-exodus.webp" alt="" class="stretch">
+                </section>
+                <section>
+                    <img src="images/bm-exodus-chart-1.png" alt="">
+                </section>
+                <section>
+                    <img src="images/bm-exodus-chart-2.png" alt="">
+                </section>
+                <section>
+                    <h2>Math???</h2>
+                    <img src="images/kermit-scared.gif" alt="">
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Define "scalability"</h2>
+                    <div class="fragment">
+                        <p>The relation between</p>
+                        <ul>
+                            <li>Resources</li>
+                            <li>Processing time</li>
+                            <li>Problem size / Work</li>
+                        </ul>
+                        <p>\[ S( R, T, W ) \]</p>
+                    </div>
+                </section>
+                <section>
+                    <h3>Batch</h3>
+                    <p>\[ T = S(R) \mid W = const \]</p>
+                    <hr>
+                    <h3>Interactive</h3>
+                    <p>\[ W = S(R) \mid T = const \]</p>
+                </section>
+                <section>
+                    <h2>Scalability chart</h2>
+                    <canvas id="scaleTypes"></canvas>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Lies, damn lies and statistics</h1>
+                </section>
+                <section>
+                    <h3><b>Someone</b> will win the lottery<br>but<br><b>it won't be you</b></h3>
+                </section>
+                <section>
+                    <h2>The law of truly large numbers</h2>
+                    <p>Once in a million events happen all the time</p>
+                </section>
+                <section>
+                    <h2>The birthday paradox</h2>
+                    <div>
+                        <p>How many people should be in a room for<br>P[shared birthday] > 0.5?</p>
+                        <img src="images/Birthday_Paradox.svg" alt="" class="fragment" height="420px"
+                            style="margin-botton: 20px;">
+                    </div>
+                </section>
+                <section>
+                    <h2>Volume scales faster than surface</h2>
+                    <div class="container">
+                        <div class="col">
+                            <p>Connections \( \propto \mathcal{O} (n^2) \)</p>
+                            <p>Subgroups \( \propto \mathcal{O} (2^n) \)</p>
+                        </div>
+                        <div class="col">
+                            <img src="images/node-connections.png" height="450px" alt="">
+                        </div>
+                    </div>
+                    <!-- <canvas id="scaling-nodes"></canvas> -->
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>Emergent behavior</h1>
+                    <p>When do grains of sand become a heap?</p>
+                </section>
+                <section>
+                    <h2>Let's play a game</h2>
+                    <ol>
+                        <li>Choose a number between 1 and 5, call that X</li>
+                        <li>Wait until you hear hand clapping</li>
+                        <li>Clap your hands X times</li>
+                        <li>Wait X seconds</li>
+                        <li>Go back to #2</li>
+                    </ol>
+                </section>
+                <section>
+                    <h2>When do re-mirrors become a storm?</h2>
+                    <p><a href="https://aws.amazon.com/message/65648/"><img src="images/aws-ebs-qrcode.png" alt=""></a></p>
+                </section>
+                <section>
+                    <h2>Emergent behavior</h2>
+                    <ul>
+                        <li>Aggregate impact</li>
+                        <li>Interactions of elements dominate</li>
+                        <li>Non-linear emergence</li>
+                    </ul>
+                </section>
+                <section>
+                    <img src="images/coupling.png" class="stretch" alt="">
+                </section>
+                <section>
+                    <img src="images/inconceivable-state.jpg" alt="">
+                </section>
+                <section>
+                    <h2>Emergence of state</h2>
+                    <ul>
+                        <li>Interactions <i>are</i> state</li>
+                        <li>Super linear scaling</li>
+                        <li>Propagation time increases with scale</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>All large systems are essentially stateful</h2>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>The Universal Scalability Law</h2>
+                    <div style="position: relative;">
+                        <canvas id="chart-usl"></canvas>
+                    </div>
+                </section>
+                <section>
+                    <h2>The Universal Scalability Law</h2>
+                    <p>\[ X(N) = \frac {\gamma N} {1 + \alpha (N - 1) + \beta N (N - 1) } \]</p>
+                    <ul>
+                        <li>𝛼 - Contention; queueing for shared resource</li>
+                        <li>𝛽 - Consistency; Coordination between processes</li>
+                        <li>𝛾 - Relative scale parameter</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>$ \alpha $ - Contention</h2>
+                    <div class="container">
+                        <div class="col">
+                            <ul>
+                                <li>Waiting for shared resource</li>
+                                <li>Queueing</li>
+                                <li>Limited by shared resource</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <img src="images/contention.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>$ \beta $ - Consistency</h2>
+                    <div class="container">
+                        <div class="col">
+                            <ul>
+                                <li>Coordination between processes</li>
+                                <li>Processes wait for each other</li>
+                                <li>Limited by any process</li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <img src="images/coordination.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>What about latency?</h2>
+                    <canvas id="chart-usl-latency"></canvas>
+                </section>
+                <section>
+                    <h2>How do we scale things?</h2>
+                    <p>By warping space and time!</p>
+                </section>
+                <section>
+                    <h2>Space warp</h2>
+                    <div class="container">
+                        <div class="col">
+                            <img src="images/sharding.png" alt="">
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col">
+                            <img src="images/replication.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h2>Time warp</h2>
+                    <div class="container">
+                        <div class="col">
+                            <img src="images/reorder.png" alt="">
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col">
+                            <img src="images/lag.png" alt="">
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <canvas id="chart-usl-annotated"></canvas>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Queue theory crash course</h2>
+                    <img src="images/queue.png" alt="">
+                </section>
+                <section>
+                    <div>
+                        <canvas id="queue-latency"></canvas>
+                        <p>\( W \propto \frac { \rho } {1 - \rho} \)</p>
+                    </div>
+                </section>
+                <section>
+                    <h2>Variance</h2>
+                    <div style="position: relative; height: 400px; width: 800px; margin: auto;">
+                        <canvas id="queue-variance"></canvas>
+                    </div>
+                    <input type="range" name="variance" id="variance" min="0" max="10" value="1" class="slider">
+                    <p>\( W \propto \frac { \rho } {1 - \rho} \frac {C_s^2 + C_a^2} {2} \)</p>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h1>#FailAtScale</h1>
+                    <div class="container">
+                        <div class="col">
+                            <h3>Component failure</h3>
+                            <p class="fragment" data-fragment-index="2">independent &rarr; linear scaling</p>
+                        </div>
+                        <div class="vl"></div>
+                        <div class="col">
+                            <h3>Interaction failure</h3>
+                            <p class="fragment" data-fragment-index="2">dependent &rarr; super linear scaling</p>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <canvas id="failure-scale"></canvas>
+                </section>
+                <section>
+                    <h2>#FailAtScale</h2>
+                    <ul>
+                        <li>Statistical failures</li>
+                        <li>Latency grows &rarr; timeouts</li>
+                        <li>Failure demand (retries)</li>
+                    </ul>
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Go forth and scale</h2>
+                    <ul>
+                        <li>Lower the variance, raise the mean</li>
+                        <li>Avoid coordination</li>
+                        <li>Warp time and space</li>
+                        <li>Reduce statistical failures</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Quality is key to Scaling</h2>
+                    <h3>"Quality" &rarr; less rework, uniformity</h3>
+                    <div class="container">
+                        <div class="col"><img height="400" src="https://upload.wikimedia.org/wikipedia/commons/b/ba/WAShewhart.jpg" alt=""></div>
+                        <div class="col"><img height="400" src="images/Deming.jpg" alt=""></div>
+                    </div>
+                </section>
+                <section>
+                    <h2>What have we learned?</h2>
+                    <ul>
+                        <li>Math helps us think</li>
+                        <li>Models reveal scaling challenges</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>QED</h2>
+                    <img src="images/dark-math.jpg" alt="">
+                </section>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/math/math.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"
+        integrity="sha256-+8RZJua0aEWg+QVVKg4LEzEEm/8RFez5Tb4JBNiV5xA=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.6.1/d3.min.js"></script>
+    <link rel="stylesheet" href="plugins/customcontrols/style.css">
+    <link rel="stylesheet" href="plugins/chalkboard/style.css">
+    <script src="plugins/chalkboard/plugin.js"></script>
+    <script src="plugins/customcontrols/plugin.js"></script>
+    <script src="js/chartjs-plugin-annotation.min.js"></script>
+
+    <script>
+        Reveal.initialize({
+            plugins: [RevealMath.KaTeX, RevealChalkboard, RevealCustomControls],
+            width: 1200,
+            customcontrols: {
+                controls: [
+                    {
+                        icon: '<i class="fa fa-pen-square"></i>',
+                        title: 'Toggle chalkboard (B)',
+                        action: 'RevealChalkboard.toggleChalkboard();'
+                    },
+                    {
+                        icon: '<i class="fa fa-pen"></i>',
+                        title: 'Toggle notes canvas (C)',
+                        action: 'RevealChalkboard.toggleNotesCanvas();'
+                    }
+                ]
+            }
+        });
+
+
+        function usl(alpha, beta, n) {
+            return n / (1 + alpha * (n - 1) + beta * n * (n - 1));
+        }
+
+        function amdahl(alpha, n) {
+            return usl(alpha, 0, n);
+        }
+
+        function mm1(rho) {
+            return rho / (1 - rho);
+        }
+
+        function kingman(rho, tau, cs, ca) {
+            return mm1(rho) * (cs ** 2 + ca ** 2) / 2 * tau;
+        }
+
+
+        function graph(elementSelector, data, opts = {}) {
+            const ctx = document.querySelector(elementSelector).getContext('2d');
+
+            return new Chart(ctx, {
+                type: 'line',
+                data,
+                options: _.merge({
+                    responsive: true,
+                    events: ['click'],
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                text: 'Throughput',
+                                display: true,
+                                font: { size: 20 }
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            type: 'linear',
+                            title: {
+                                text: 'Concurrency/nodes',
+                                display: true,
+                                font: { size: 20 }
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    }
+                }, opts)
+            });
+        }
+
+        {
+            const chart = graph('canvas#scaleTypes', {
+                datasets: [{
+                    data: _.range(30).map(x => ({ x, y: x })),
+                    label: 'Linear',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue'
+                },
+                {
+                    data: _.range(30).map(x => ({ x, y: x + 0.05 * Math.pow(x, 2) })),
+                    label: 'Super Linear',
+                    borderColor: 'green',
+                    backgroundColor: 'green',
+                    hidden: true
+                },
+                {
+                    data: _.range(30).map(x => ({ x, y: amdahl(0.05, x) })),
+                    label: 'Sub Linear',
+                    borderColor: 'darkred',
+                    backgroundColor: 'darkred',
+                    hidden: true
+                },
+                {
+                    data: _.range(30).map(x => ({ x, y: usl(0.05, 0.007, x) })),
+                    label: 'Retrograde',
+                    borderColor: 'red',
+                    backgroundColor: 'red',
+                    hidden: true
+                }],
+            },
+                {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 32
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            max: 29
+                        },
+                        x: {
+                            max: 29
+                        }
+                    }
+                });
+
+            document.querySelector('canvas#scaleTypes').addEventListener('click', function (ev) {
+                const ds = _.find(chart.data.datasets, (ds) => ds.hidden)
+                if (!_.isNil(ds)) {
+                    ds.hidden = false;
+                    chart.update();
+                }
+            });
+            document.querySelector('canvas#scaleTypes').addEventListener('dblclick', function (ev) {
+                _.drop(chart.data.datasets).forEach(ds => {
+                    ds.hidden = true;
+                })
+                chart.update();
+            })
+        }
+
+        {
+            const alpha = 0.02;
+            const beta = 0.0005;
+            const data = _.range(80).map(x => ({ x, y: usl(alpha, beta, x) }));
+            const uslmax = usl(alpha, beta, Math.sqrt((1 - alpha) / beta));
+            const uslGraph = graph('canvas#chart-usl', {
+                datasets: [{
+                    data: _.range(80).map(x => ({ x, y: x })),
+                    label: 'Perfect scaling',
+                    pointRadius: 0,
+                    borderColor: 'green',
+                    backgroundColor: 'green'
+                },
+                {
+                    data: _.range(80).map(x => ({ x, y: amdahl(alpha, x) })),
+                    label: 'Amdahl',
+                    borderColor: 'blue',
+                    backgroundColor: 'blue'
+                },
+                {
+                    data,
+                    label: 'USL',
+                    borderColor: 'red',
+                    backgroundColor: 'red'
+                },
+                {
+                    data: _.range(80).map(x => ({ x, y: uslmax })),
+                    pointRadius: 0,
+                    label: 'Max throughput',
+                    borderColor: 'darkgrey'
+                }]
+            }, {
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                },
+                scales: {
+                    y: {
+                        max: uslmax + 10
+                    }
+                }
+            });
+
+            const uslLatencyChart = graph('canvas#chart-usl-latency', {
+                datasets: [{
+                    data: _.range(80).map(x => ({ x, y: x / usl(alpha, beta, x) })),
+                    label: 'USL Latency',
+                    backgroundColor: 'red',
+                    borderColor: 'red'
+                }]
+            }, {
+                scales: {
+                    y: {
+                        title: { text: 'Latency' }
+                    }
+                }
+            })
+        }
+
+        graph('canvas#queue-latency', {
+            datasets: [{
+                data: _.range(0, 1, 0.01).map(x => ({ x, y: mm1(x) })),
+                borderColor: 'red'
+            }]
+        }, {
+            scales: {
+                y: {
+                    title: { text: 'Latency' }
+                },
+                x: {
+                    title: { text: 'Utilization (𝜌)' },
+                    ticks: { display: true }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        });
+
+        {
+            let cs = 1;
+            const chart = graph('canvas#queue-variance', {
+                datasets: [{
+                    data: _.range(0, 1, 0.01).concat([0.995, 0.999, 0.9995]).map(x => ({ x, y: kingman(x, 1, cs, 1) })),
+                    borderColor: 'blue',
+                    backgroundColor: 'blue',
+                    label: 'Reference'
+                },
+                {
+                    data: _.range(0, 1, 0.01).map(x => ({ x, y: kingman(x, 1, cs, 1) })),
+                    borderColor: 'red',
+                    backgroundColor: 'red',
+                    label: 'Kingman'
+                }]
+            }, {
+                scales: {
+                    y: {
+                        max: 500,
+                        title: { text: 'Latency' }
+                    },
+                    x: {
+                        title: { text: 'Utilization (𝜌)' }
+                    }
+                }
+            });
+
+            document.querySelector('input#variance').addEventListener('change', (event) => {
+                const cs = event.target.value;
+                chart.data.datasets[1].data = _.range(0, 1, 0.01).map(x => ({ x, y: kingman(x, 1, cs, 1) }));
+                chart.update();
+            });
+        }
+
+        {
+            const alpha = 0.05;
+            const beta = 0.01;
+
+            graph('canvas#failure-scale', {
+                datasets: [{
+                    data: _.range(30).map(x => ({ x, y: x / usl(alpha, beta, x)})),
+                    label: 'Component failure rate',
+                    borderColor: 'orange',
+                    backgroundColor: 'orange'
+                },
+                {
+                    data: _.range(30).map(x => ({ x, y: x**2 / usl(alpha, beta, x)})),
+                    label: 'Interaction failure rate',
+                    borderColor: 'red',
+                    backgroundColor: 'red'
+                }],
+            },
+                {
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: 32
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            max: 29
+                        },
+                        x: {
+                            max: 29
+                        }
+                    }
+            });
+
+        }
+
+        {
+            const alpha = 0.02;
+            const beta = 0.0005;
+            const data = _.range(80).map(x => ({ x, y: usl(alpha, beta, x) }));
+            const uslmax = usl(alpha, beta, Math.sqrt((1 - alpha) / beta));
+            const uslGraph = graph('canvas#chart-usl-annotated', {
+                datasets: [{
+                    data: _.range(80).map(x => ({ x, y: x })),
+                    label: 'Perfect scaling',
+                    pointRadius: 0,
+                    borderColor: 'green',
+                    backgroundColor: 'green'
+                },
+                {
+                    data,
+                    label: 'USL',
+                    borderColor: 'red',
+                    backgroundColor: 'red'
+                },
+                {
+                    data: _.range(80).map(x => ({ x, y: uslmax })),
+                    pointRadius: 0,
+                    label: 'Max throughput'
+                }]
+            }, {
+                scales: {
+                    y: {max: uslmax + 2}
+                },
+                plugins: {
+                    annotation: {
+                        annotations: {
+                            linear: {
+                                type: 'label',
+                                xValue: 8,
+                                yValue: 10,
+                                rotation: 295,
+                                content: ['Perfect scaling: Sharding, re-ordering'],
+                                font: {
+                                    size: 20
+                                }
+                            },
+                            asyncbubble: {
+                                type: 'ellipse',
+                                xMin: 10,
+                                yMin: 8,
+                                xMax: 35,
+                                yMax: 15,
+                                backgroundColor: 'rgba(255, 80, 0, 0.25)',
+                                rotation: 330
+                            },
+                            async: {
+                                type: 'label',
+                                xValue: 22,
+                                yValue: 10,
+                                content: ['Diminishing returns:', 'Replication, lag'],
+                                font: { size: 20 }
+                            },
+                            syncbuble: {
+                                type: 'ellipse',
+                                xMin: 40,
+                                yMin: uslmax - 7,
+                                xMax: 80,
+                                yMax: uslmax + 2,
+                                backgroundColor: 'rgba(255, 99, 132, 0.25)'
+                            },
+                            sync: {
+                                type: 'label',
+                                xValue: 60,
+                                yValue: uslmax - 2,
+                                content: ['Retrograde:', 'No warps, sync'],
+                                font: {size: 20}
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+    <style>
+        .container {
+            display: flex;
+        }
+        .col {
+            flex: 1;
+        }
+        .vl {
+            border-left: 2px solid black;
+        }
+        .slider {
+            width: 100%;
+        }
+    </style>
+</body>
+
+</html>
