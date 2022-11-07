@@ -57,7 +57,9 @@
                 </section>
                 <section>
                     <h2>Scalability chart</h2>
-                    <canvas id="scaleTypes"></canvas>
+                    <div class="chart">
+                        <canvas id="scaleTypes"></canvas>
+                    </div>
                 </section>
             </section>
             <section>
@@ -141,7 +143,7 @@
             <section>
                 <section>
                     <h2>The Universal Scalability Law</h2>
-                    <div style="position: relative;">
+                    <div class="chart">
                         <canvas id="chart-usl"></canvas>
                     </div>
                 </section>
@@ -186,7 +188,9 @@
                 </section>
                 <section>
                     <h2>What about latency?</h2>
-                    <canvas id="chart-usl-latency"></canvas>
+                    <div class="chart">
+                        <canvas id="chart-usl-latency"></canvas>
+                    </div>
                 </section>
                 <section>
                     <h2>How do we scale things?</h2>
@@ -217,7 +221,9 @@
                     </div>
                 </section>
                 <section>
-                    <canvas id="chart-usl-annotated"></canvas>
+                    <div class="chart">
+                        <canvas id="chart-usl-annotated"></canvas>
+                    </div>
                 </section>
             </section>
             <section>
@@ -226,14 +232,14 @@
                     <img src="images/queue.png" alt="">
                 </section>
                 <section>
-                    <div>
+                    <div class="chart">
                         <canvas id="queue-latency"></canvas>
-                        <p>\( W \propto \frac { \rho } {1 - \rho} \)</p>
                     </div>
+                    <p>\( W \propto \frac { \rho } {1 - \rho} \)</p>
                 </section>
                 <section>
                     <h2>Variance</h2>
-                    <div style="position: relative; height: 400px; width: 800px; margin: auto;">
+                    <div class="chart" style="height: 400px; width: 800px; margin: auto;">
                         <canvas id="queue-variance"></canvas>
                     </div>
                     <input type="range" name="variance" id="variance" min="0" max="10" value="1" class="slider">
@@ -256,7 +262,9 @@
                     </div>
                 </section>
                 <section>
-                    <canvas id="failure-scale"></canvas>
+                    <div class="chart">
+                        <canvas id="failure-scale"></canvas>
+                    </div>
                 </section>
                 <section>
                     <h2>#FailAtScale</h2>
@@ -314,8 +322,16 @@
     <script src="js/chartjs-plugin-annotation.min.js"></script>
 
     <script>
+        const printMode = new URLSearchParams(window.location.search).has('print-pdf');
+        const plugins = [RevealMath.KaTeX];
+        if (!printMode) {
+            plugins.push(RevealChalkboard);
+            plugins.push(RevealCustomControls);
+        }
+
         Reveal.initialize({
-            plugins: [RevealMath.KaTeX, RevealChalkboard, RevealCustomControls],
+            pdfMaxPagesPerSlide: 1,
+            plugins: plugins,
             width: 1200,
             customcontrols: {
                 controls: [
@@ -401,21 +417,21 @@
                     label: 'Super Linear',
                     borderColor: 'green',
                     backgroundColor: 'green',
-                    hidden: true
+                    hidden: !printMode
                 },
                 {
                     data: _.range(30).map(x => ({ x, y: amdahl(0.05, x) })),
                     label: 'Sub Linear',
                     borderColor: 'darkred',
                     backgroundColor: 'darkred',
-                    hidden: true
+                    hidden: !printMode
                 },
                 {
                     data: _.range(30).map(x => ({ x, y: usl(0.05, 0.007, x) })),
                     label: 'Retrograde',
                     borderColor: 'red',
                     backgroundColor: 'red',
-                    hidden: true
+                    hidden: !printMode
                 }],
             },
                 {
@@ -560,11 +576,20 @@
                 }
             });
 
+            
             document.querySelector('input#variance').addEventListener('change', (event) => {
                 const cs = event.target.value;
                 chart.data.datasets[1].data = _.range(0, 1, 0.01).map(x => ({ x, y: kingman(x, 1, cs, 1) }));
                 chart.update();
             });
+            if (printMode) {
+                window.addEventListener('DOMContentLoaded', (event) => {
+                    const cs = 4;
+                    document.querySelector('input#variance').value = 4;
+                    chart.data.datasets[1].data = _.range(0, 1, 0.01).map(x => ({ x, y: kingman(x, 1, cs, 1) }));
+                    chart.update();            
+                });
+            }
         }
 
         {
