@@ -216,6 +216,28 @@
                         <canvas id="chart-usl-annotated"></canvas>
                     </div>
                 </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Queue theory crash course</h2>
+                    <img src="images/queue.png" alt="">
+                </section>
+                <section>
+                    <div class="chart">
+                        <canvas id="queue-latency"></canvas>
+                    </div>
+                    <p>\( W \propto \frac { \rho } {1 - \rho} \)</p>
+                </section>
+                <section>
+                    <h2>Variance</h2>
+                    <div class="chart" style="height: 400px; width: 800px; margin: auto;">
+                        <canvas id="queue-variance"></canvas>
+                    </div>
+                    <input type="range" name="variance" id="variance" min="0" max="10" value="1" class="slider">
+                    <p>\( W \propto \frac { \rho } {1 - \rho} \frac {C_s^2 + C_a^2} {2} \)</p>
+                </section>
+            </section>
+            <section>
                 <section>
                     <h2>What do these have in common?</h2>
                     <ul>
@@ -252,26 +274,7 @@
                 <section>
                     <h2>Hot spots</h2>
                     <p>All shards are equal, but some are more equal than others</p>
-                </section>
-            </section>
-            <section>
-                <section>
-                    <h2>Queue theory crash course</h2>
-                    <img src="images/queue.png" alt="">
-                </section>
-                <section>
-                    <div class="chart">
-                        <canvas id="queue-latency"></canvas>
-                    </div>
-                    <p>\( W \propto \frac { \rho } {1 - \rho} \)</p>
-                </section>
-                <section>
-                    <h2>Variance</h2>
-                    <div class="chart" style="height: 400px; width: 800px; margin: auto;">
-                        <canvas id="queue-variance"></canvas>
-                    </div>
-                    <input type="range" name="variance" id="variance" min="0" max="10" value="1" class="slider">
-                    <p>\( W \propto \frac { \rho } {1 - \rho} \frac {C_s^2 + C_a^2} {2} \)</p>
+                    <img src="images/shards-zipfian.svg" alt="">
                 </section>
             </section>
             <section>
