@@ -489,19 +489,19 @@
                     }
                 });
 
-            document.querySelector('canvas#scaleTypes').addEventListener('click', function (ev) {
-                const ds = _.find(chart.data.datasets, (ds) => ds.hidden)
-                if (!_.isNil(ds)) {
-                    ds.hidden = false;
-                    chart.update();
-                }
-            });
-            document.querySelector('canvas#scaleTypes').addEventListener('dblclick', function (ev) {
-                _.drop(chart.data.datasets).forEach(ds => {
-                    ds.hidden = true;
-                })
-                chart.update();
-            })
+            // document.querySelector('canvas#scaleTypes').addEventListener('click', function (ev) {
+            //     const ds = _.find(chart.data.datasets, (ds) => ds.hidden)
+            //     if (!_.isNil(ds)) {
+            //         ds.hidden = false;
+            //         chart.update();
+            //     }
+            // });
+            // document.querySelector('canvas#scaleTypes').addEventListener('dblclick', function (ev) {
+            //     _.drop(chart.data.datasets).forEach(ds => {
+            //         ds.hidden = true;
+            //     })
+            //     chart.update();
+            // })
         }
 
         {
